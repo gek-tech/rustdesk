@@ -6,6 +6,10 @@ on:
 jobs:
   build-windows:
     runs-on: windows-2022
+    env:
+      VCPKG_ROOT: 'C:/vcpkg'
+      VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
+
     steps:
       - name: Checkout Code (inkl. Submodules)
         uses: actions/checkout@v4
@@ -22,14 +26,17 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install LLVM / Clang (für libclang/bindgen)
+      - name: Install LLVM / Clang
         run: |
           choco install llvm -y
+
+      - name: Install vcpkg Dependencies (Opus)
+        run: |
+          vcpkg install opus:x64-windows-static
 
       - name: Build RustDesk Client
         shell: bash
         run: |
-          # Vorbereitung für den Flutter/Rust-Build
           python3 build.py --flutter
 
       - name: Upload Artifact
