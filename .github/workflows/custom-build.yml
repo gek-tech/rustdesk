@@ -26,12 +26,12 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install LLVM, Clang & NASM (Notwendig für AOM/AV1 Codec)
+      - name: Install LLVM, Clang & NASM
         run: |
           choco install llvm nasm -y
           echo "C:\Program Files\NASM" >> $env:GITHUB_PATH
 
-      - name: Install vcpkg C-Dependencies (Opus, Libsodium, VPX, YUV, AOM)
+      - name: Install vcpkg C-Dependencies
         run: |
           cd C:/vcpkg
           .\vcpkg.exe integrate install
@@ -40,6 +40,14 @@ jobs:
           .\vcpkg.exe install libyuv:x64-windows-static
           .\vcpkg.exe install libvpx:x64-windows-static
           .\vcpkg.exe install aom:x64-windows-static
+
+      - name: Install flutter_rust_bridge_codegen & Generate Bridge
+        shell: bash
+        run: |
+          cargo install flutter_rust_bridge_codegen --version 1.80.1 --locked
+          # Generiert die fehlenden Rust-Bindings/Module:
+          flutter_rust_bridge_codegen --rust-input src/flutter_ffi.rs --dart-output flutter/lib/generated_bridge.dart
+
 
       - name: Build RustDesk Client via build.py
         shell: bash
