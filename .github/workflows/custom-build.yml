@@ -8,6 +8,7 @@ jobs:
     runs-on: windows-2022
     env:
       VCPKG_ROOT: 'C:/vcpkg'
+      VCPKGRS_DYNAMIC: '0'
 
     steps:
       - name: Checkout Code (inkl. Submodules)
@@ -30,6 +31,13 @@ jobs:
           choco install llvm nasm -y
           echo "C:\Program Files\NASM" >> $env:GITHUB_PATH
 
+      - name: Install vcpkg C-Dependencies (Opus & Libsodium)
+        run: |
+          cd C:/vcpkg
+          .\vcpkg.exe integrate install
+          .\vcpkg.exe install opus:x64-windows-static
+          .\vcpkg.exe install libsodium:x64-windows-static
+
       - name: Build RustDesk Client via build.py
         shell: bash
         run: |
@@ -39,4 +47,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: RustDesk-Custom-Windows
-          path: target/release/rustdesk.exe
+          path: |
+            target/release/rustdesk.exe
+            build/windows/runner/Release/
