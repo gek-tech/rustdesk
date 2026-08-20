@@ -21,9 +21,11 @@ jobs:
         with:
           targets: x86_64-pc-windows-msvc
 
+      # --- FLUTTER AUF VERSION 3.19.6 FIXIEREN ---
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.19.6'
           channel: 'stable'
 
       - name: Install LLVM, Clang & NASM
@@ -45,9 +47,7 @@ jobs:
         shell: bash
         run: |
           cargo install flutter_rust_bridge_codegen --version 1.80.1 --locked
-          # Generiert die fehlenden Rust-Bindings/Module:
           flutter_rust_bridge_codegen --rust-input src/flutter_ffi.rs --dart-output flutter/lib/generated_bridge.dart
-
 
       - name: Build RustDesk Client via build.py
         shell: bash
