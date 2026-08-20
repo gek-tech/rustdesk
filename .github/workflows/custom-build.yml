@@ -31,12 +31,15 @@ jobs:
           choco install llvm nasm -y
           echo "C:\Program Files\NASM" >> $env:GITHUB_PATH
 
-      - name: Install vcpkg C-Dependencies (Opus & Libsodium)
+      - name: Install vcpkg C-Dependencies (Opus, Libsodium, VPX, YUV, AOM)
         run: |
           cd C:/vcpkg
           .\vcpkg.exe integrate install
           .\vcpkg.exe install opus:x64-windows-static
           .\vcpkg.exe install libsodium:x64-windows-static
+          .\vcpkg.exe install libyuv:x64-windows-static
+          .\vcpkg.exe install libvpx:x64-windows-static
+          .\vcpkg.exe install aom:x64-windows-static
 
       - name: Build RustDesk Client via build.py
         shell: bash
