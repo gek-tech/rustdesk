@@ -21,11 +21,10 @@ jobs:
         with:
           targets: x86_64-pc-windows-msvc
 
-      # --- FLUTTER AUF VERSION 3.19.6 FIXIEREN ---
-      - name: Setup Flutter
+      - name: Setup Flutter (mit Dart 3.5+)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.6'
+          flutter-version: '3.24.5'
           channel: 'stable'
 
       - name: Install LLVM, Clang & NASM
