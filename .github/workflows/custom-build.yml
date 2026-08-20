@@ -8,7 +8,6 @@ jobs:
     runs-on: windows-2022
     env:
       VCPKG_ROOT: 'C:/vcpkg'
-      VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
 
     steps:
       - name: Checkout Code (inkl. Submodules)
@@ -26,15 +25,12 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install LLVM / Clang
+      - name: Install LLVM, Clang & NASM (Notwendig für AOM/AV1 Codec)
         run: |
-          choco install llvm -y
+          choco install llvm nasm -y
+          echo "C:\Program Files\NASM" >> $env:GITHUB_PATH
 
-      - name: Install vcpkg Dependencies
-        run: |
-          vcpkg install --triplet x64-windows-static
-
-      - name: Build RustDesk Client
+      - name: Build RustDesk Client via build.py
         shell: bash
         run: |
           python3 build.py --flutter
