@@ -30,9 +30,9 @@ jobs:
         run: |
           choco install llvm -y
 
-      - name: Install vcpkg Dependencies (Opus)
+      - name: Install vcpkg Dependencies
         run: |
-          vcpkg install opus:x64-windows-static
+          vcpkg install --triplet x64-windows-static
 
       - name: Build RustDesk Client
         shell: bash
