@@ -53,10 +53,19 @@ jobs:
           cargo install flutter_rust_bridge_codegen --version 1.80.1 --locked
           flutter_rust_bridge_codegen --rust-input src/flutter_ffi.rs --dart-output flutter/lib/generated_bridge.dart
 
+      # --- HIER: EIGENES ICON EINSETZEN (Pfad ggf. anpassen) ---
+      - name: Replace App Icons
+        run: |
+          if (Test-Path "assets/my_icon.ico") {
+            copy-item "assets/my_icon.ico" "res/icon.ico" -Force
+            copy-item "assets/my_icon.ico" "flutter/windows/runner/resources/app_icon.ico" -Force
+          }
+
+      # --- HIER: BUILD MIT SERVER-DATEN ---
       - name: Build RustDesk Client via build.py
         shell: bash
         run: |
-          python3 build.py --flutter
+          python3 build.py --flutter --custom-rendezvous-server "DEIN_SERVER_ODER_IP" --key "DEIN_PUBLIC_KEY"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
