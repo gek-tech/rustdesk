@@ -27,6 +27,11 @@ jobs:
           flutter-version: '3.24.5'
           channel: 'stable'
 
+      - name: Fetch Flutter Dependencies
+        run: |
+          cd flutter
+          flutter pub get
+
       - name: Install LLVM, Clang & NASM
         run: |
           choco install llvm nasm -y
