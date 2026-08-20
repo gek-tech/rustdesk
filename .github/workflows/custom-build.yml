@@ -7,8 +7,10 @@ jobs:
   build-windows:
     runs-on: windows-2022
     steps:
-      - name: Checkout Code
+      - name: Checkout Code (inkl. Submodules)
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -20,13 +22,15 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install vcpkg dependencies
+      - name: Install LLVM / Clang (für libclang/bindgen)
         run: |
-          vcpkg integrate install
+          choco install llvm -y
 
       - name: Build RustDesk Client
+        shell: bash
         run: |
-          cargo build --release
+          # Vorbereitung für den Flutter/Rust-Build
+          python3 build.py --flutter
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
