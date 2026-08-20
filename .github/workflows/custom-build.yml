@@ -63,5 +63,5 @@ jobs:
         with:
           name: RustDesk-Custom-Windows
           path: |
-            target/release/rustdesk.exe
-            build/windows/runner/Release/
+            rustdesk_portable.exe
+            rustdesk-*-install.exe
