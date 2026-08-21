@@ -57,7 +57,7 @@ jobs:
         shell: bash
         env:
           RENDEZVOUS_SERVER: "rustdesk.kracht.io"
-          RS_PUB_KEY: "qr+tqoH2qrQWFGBWKsN734UquYLi4exCg+vpnW6xOPY=r"
+          RS_PUB_KEY: "qr+tqoH2qrQWFGBWKsN734UquYLi4exCg+vpnW6xOPY="
         run: |
           python3 build.py --flutter
 
