@@ -9,6 +9,9 @@ jobs:
     env:
       VCPKG_ROOT: 'C:/vcpkg'
       VCPKGRS_DYNAMIC: '0'
+      # Global festlegen:
+      RENDEZVOUS_SERVER: 'rustdesk.kracht.io'
+      RS_PUB_KEY: 'qr+tqoH2qrQWFGBWKsN734UquYLi4exCg+vpnW6xOPY='
 
     steps:
       - name: Checkout Code (inkl. Submodules)
@@ -53,11 +56,18 @@ jobs:
           cargo install flutter_rust_bridge_codegen --version 1.80.1 --locked
           flutter_rust_bridge_codegen --rust-input src/flutter_ffi.rs --dart-output flutter/lib/generated_bridge.dart
 
+      # Server-Konfiguration direkt vor dem Bauen in Rust injizieren
+      - name: Inject Custom Server Config
+        shell: bash
+        run: |
+          sed -i 's|pub const RENDEZVOUS_SERVER: &str = "";|pub const RENDEZVOUS_SERVER: &str = "rustdesk.kracht.io";|g' src/common.rs 2>/dev/null || true
+          sed -i 's|pub const RS_PUB_KEY: &str = "";|pub const RS_PUB_KEY: &str = "qr+tqoH2qrQWFGBWKsN734UquYLi4exCg+vpnW6xOPY=";|g' src/common.rs 2>/dev/null || true
+
       - name: Build RustDesk Client via build.py
         shell: bash
         env:
-          RENDEZVOUS_SERVER: "rustdesk.kracht.io"
-          RS_PUB_KEY: "qr+tqoH2qrQWFGBWKsN734UquYLi4exCg+vpnW6xOPY="
+          RENDEZVOUS_SERVER: 'rustdesk.kracht.io'
+          RS_PUB_KEY: 'qr+tqoH2qrQWFGBWKsN734UquYLi4exCg+vpnW6xOPY='
         run: |
           python3 build.py --flutter
 
