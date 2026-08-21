@@ -65,7 +65,7 @@ jobs:
       - name: Build RustDesk Client via build.py
         shell: bash
         run: |
-          python3 build.py --flutter --custom-rendezvous-server "DEIN_SERVER_ODER_IP" --key "DEIN_PUBLIC_KEY"
+          python3 build.py --flutter --custom-rendezvous-server "rustdesk.kracht.io" --key "qr+tqoH2qrQWFGBWKsN734UquYLi4exCg+vpnW6xOPY=r"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
